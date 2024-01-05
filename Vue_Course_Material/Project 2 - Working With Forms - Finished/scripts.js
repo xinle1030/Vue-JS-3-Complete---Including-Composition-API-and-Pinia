@@ -17,6 +17,7 @@ const handlingForms = {
     data() {
         return {
             members: window.members,
+            // store data for new member for form binding
             newMember: {
 
             }
@@ -29,7 +30,7 @@ const handlingForms = {
                 alert("All fields must be filled")
             } else {
                 this.members.push(this.newMember);
-                this.newMember = {};
+                this.newMember = {}; // reset the form to be empty for all fields
             }
         }
     }

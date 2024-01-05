@@ -41,6 +41,9 @@
                   <form>
                     
                     <label for="fname">First name:</label><br>
+
+                    <!-- use v-model for two-way form input bindings, can be used at textarea, form, selected -->
+                    <!-- bind the field into the data properties -->
                     <input type="text" id="fname" name="fname" v-model="newMember.fname"><br>
                     
                     <label for="lname">Last name:</label><br>
@@ -59,7 +62,7 @@
               </section>
 
         </main>
-        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="scripts.js"></script>
     </body>
 
