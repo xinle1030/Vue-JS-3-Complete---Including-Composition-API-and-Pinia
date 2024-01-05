@@ -64,6 +64,7 @@ var products = [
         }
 ];
 
+// initialize vueJS object
 // an object to hold all the logic about the system
 const SelfServiceMachine = {
     // data property, which is a function to hold the data
