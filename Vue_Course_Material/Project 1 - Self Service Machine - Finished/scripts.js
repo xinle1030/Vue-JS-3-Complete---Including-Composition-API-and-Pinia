@@ -64,19 +64,26 @@ var products = [
         }
 ];
 
+// an object to hold all the logic about the system
 const SelfServiceMachine = {
+    // data property, which is a function to hold the data
     data() {
+        // return data object
         return {
+            // window.products: products global variable
             products: window.products,
             orderTotal: 0
         }
     },
+    // method object property
     methods: {
         toggleActive: function(item){
             item.active = !item.active;
         },
         total: function(){
             var total = 0;
+
+            // use this.products to access the products data 
             this.products.forEach(function(item){
                 if (item.active){
                     total+= item.price * item.quantity;
@@ -87,4 +94,6 @@ const SelfServiceMachine = {
     }
 };
 
+// need VueJS to mount our application
+// #app is the html element with id = app
 Vue.createApp(SelfServiceMachine).mount('#app');

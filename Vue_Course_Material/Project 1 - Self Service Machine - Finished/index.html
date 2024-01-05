@@ -1,75 +1,94 @@
 <!DOCTYPE html>
 
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Self Service Order</title>
+  </head>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
-        <title>Self Service Order</title>
-    </head>
+  <body>
+    <main id="app">
+      <section class="items">
+        <h4>Pick your items</h4>
 
-    <body>
-        
-        <main id="app">
-            
-            <section class="items">
-                <h4>Pick your items</h4>
-                <div v-for="product in products" 
-                    class="product"
-                    @click="toggleActive(product)"
-                    :class="{selected: product.active}"
-                    >
-                    
-                    <div class="photo">
-                        <img :src="product.photo">
-                    </div>
-                    <div class="description">
-                        <span class="name">{{product.name}}</span>
-                        <span class="price">$ {{product.price}}</span>
-                        <div class="quantity-area">
-                            <template v-if="product.active">
-                                <button :disabled="product.quantity<=1" @click.stop="product.quantity--">-</button> 
-                                <span class="quantity">{{product.quantity}}</span> 
-                                <button @click.stop="product.quantity++">+</button>
-                            </template>
-                        </div>
-                    </div>
-                </div>
+        <!-- allow to access the items from the SelfServiceMachine after mounting to our app -->
+        <!-- v-for is the directives for for loop -->
+        <!-- @click listen to click event, same as using v-on :click -->
+        <!-- :class is dynamic class name, add selected class if product.active = true -->
+        <div
+          v-for="product in products"
+          class="product"
+          @click="toggleActive(product)"
+          :class="{selected: product.active}"
+        >
+          <div class="photo">
+            <!-- pass a variable to an attribute -> use : and "" -->
+            <!-- :src is short for v-bind :src -->
+            <img :src="product.photo" />
+          </div>
+          <div class="description">
+            <span class="name">{{product.name}}</span>
+            <span class="price">$ {{product.price}}</span>
+            <div class="quantity-area">
+              <!-- v-if is the directives for if statement -->
+              <!-- once the product is active, show the toggling quantity section -->
+              <template v-if="product.active">
+                <!-- disable button if quantity <= 1 -->
+                <!-- use @click.stop instead of @click to prevent effect of clicking button propagate to parent element -->
+                <button
+                  :disabled="product.quantity<=1"
+                  @click.stop="product.quantity--"
+                >
+                  -
+                </button>
+                <span class="quantity">{{product.quantity}}</span>
+                <button @click.stop="product.quantity++">+</button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            </section>
+      <section class="summary" v-if="total()>0">
+        <strong>Order Details</strong>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- for loop at <tr></tr> -->
+            <tr v-for="product in products">
+                <!-- use <template></template> to put v-if here, template will not be loaded first-->
+              <template v-if="product.active">
+                <!-- Use {{}} to encapsulate the operations -->
+                <td>{{product.quantity + 'x ' + product.name}}</td>
+                <!-- .toFixed() is to round to no. of decimal places -->
+                <td>{{(product.quantity * product.price).toFixed(2)}}</td>
+              </template>
+            </tr>
 
-            <section class="summary" v-if="total()>0">
-                <strong>Order Details</strong>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="product in products">
-                            <template v-if="product.active">
-                                <td>{{product.quantity + 'x ' + product.name}}</td>
-                                <td>{{(product.quantity * product.price).toFixed(2)}}</td>
-                            </template>
-                        </tr>
-                        
-                        <tr>
-                            <th>Total</th>
-                            <th>{{total()}}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+            <tr>
+              <th>Total</th>
+              <!-- use total() method -->
+              <th>{{total()}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
 
-        </main>
-
-        <script src="https://unpkg.com/vue@next"></script>
-        <script src="scripts.js"></script>
-    </body>
-
+    <!-- cdn script for vueJS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="scripts.js"></script>
+  </body>
 </html>
