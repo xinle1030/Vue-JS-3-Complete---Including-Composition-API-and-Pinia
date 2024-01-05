@@ -21,6 +21,8 @@
                 <h3>To-do List</h3>
                 
                 <div class="all-todos">
+                    <!-- add done class if todo.done = True -->
+                    <!-- toggle between todo.done -->
                     <div 
                         class="single-todo" 
                         v-for="todo in todos"
@@ -30,6 +32,7 @@
                     </div>
                 </div>
 
+                <!-- reset todos to empty arr -->
                 <button v-if="todos.length" class="clear" @click="todos=[]">Clear All</button>
 
                 <input type="text" placeholder="Add new to-do" v-model="newTodo.text">
@@ -46,7 +49,7 @@
             </section>
 
         </main>
-        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="scripts.js"></script>
     </body>
 
