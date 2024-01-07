@@ -1,14 +1,20 @@
+<!-- put elements to show in the page in the template html tags -->
+<!-- Use this keyword in html part to access data properties -->
 <template>
 
-    <section class="score">
-      Player <span>{{ this.win_count }}</span> x 
-     <span>{{ this.lose_count }}</span> Computer
-    </section>
+  <!-- pass win_count and lose_count props to ScoreBoard component -->
+  <ScoreBoard :win_count="this.win_count" :lose_count="this.lose_count"/>
 
+    <!-- display the section when the question has been loaded from API -->
     <template v-if="this.question">
+      <!-- use v-html to parse the html result into plain text -->
       <h1 v-html="this.question">
       </h1>
 
+      <!-- the radio button options required v-bind:key directive for efficiency-->
+      <!-- iterate with element and index in for loop to use index as key -->
+      <!-- make the value for the option dynamic, use :value -->
+      <!-- v-model: sends the selected value to a data property -->
       <template v-for="(answer, index) in this.answers" v-bind:key="index">
         <input 
           :disabled="this.answerSubmitted" 
@@ -23,14 +29,13 @@
 
     </template>
     
-
-    
     <section class="result" v-if="this.answerSubmitted">
+      <!-- if-else statement -->
       <template v-if="this.chosen_answer == this.correctAnswer">
-        <h4>&#9989; Congratulations, the answer "{{this.correctAnswer}}" is correct.</h4>
+        <h4 v-html="'&#9989; Congratulations, the answer ' + this.correctAnswer + 'is correct.'"></h4>
       </template>
       <template v-else>
-        <h4>&#10060;  I'm sorry, you picked the wrong answer. The correct is "{{this.correctAnswer}}".</h4>
+        <h4 v-html="'&#10060;  I am sorry, you picked the wrong answer. The correct is ' + this.correctAnswer + '.'"></h4>
       </template>
       <button @click="this.getNewQuestion()" class="send" type="button">Next question</button>
     </section>
@@ -38,9 +43,15 @@
 </template>
 
 <script>
+// script in script tag
+
+import ScoreBoard from "./components/ScoreBoard.vue"
 
 export default {
   name: 'App',
+  components: {ScoreBoard
+  },
+  // data properties
   data() {
     return {
       chosen_answer: undefined,
@@ -52,9 +63,14 @@ export default {
       answerSubmitted: false
     }
   },
+  // computed properties: do computation on our original data properties
   computed: {
+    // the computed property here is called answers (including correct and incorrect ans to form the choices)
       answers() {
-        var answers = JSON.parse(JSON.stringify(this.incorrectAnswers));
+        var answers = JSON.parse(JSON.stringify(this.incorrectAnswers)); // to avoid two way data binding by converting into json string and into array finally 
+        
+        // shuffle the array by using splice to add this.correctAnswer [3rd arg] into random position [1st arg]
+        // 0 in second argument: remove no elements from the array
         answers.splice(Math.round(Math.random() * answers.length), 0, this.correctAnswer);
         return answers;
       }
@@ -75,8 +91,9 @@ export default {
     getNewQuestion() {
       this.chosen_answer = undefined;
       this.answerSubmitted = false;
-      this. question = undefined;
+      this.question = undefined;
 
+      // do http requests
       this.axios
       .get('https://opentdb.com/api.php?amount=1&category=30')
       .then(response => (
@@ -86,6 +103,7 @@ export default {
       ))
     }
   },
+  // lifecycle hook
   created() {
   
     this.getNewQuestion();
@@ -96,6 +114,7 @@ export default {
 </script>
 
 <style lang="scss">
+// css in style tag
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -124,17 +143,5 @@ button.send {
   background-color: #1867c0;
   border: 1px solid #1867c0;
   cursor: pointer;
-}
-
-section.score {
-  border-bottom: 1px solid black;
-  padding: 24px;
-  font-size: 18px;
-
-  span {
-    padding: 8px;
-    font-weight: bold;
-    border: 1px solid black;
-  }
 }
 </style>
