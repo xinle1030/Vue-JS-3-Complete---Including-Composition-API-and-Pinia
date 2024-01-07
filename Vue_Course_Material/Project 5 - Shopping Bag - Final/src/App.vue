@@ -3,6 +3,8 @@
     <router-link to="/">Home</router-link> -
     <router-link to="/basket">Shopping Bag ({{this.productsInBag.length}})</router-link> 
   </div>
+
+  <!-- display component from the route using router-view  -->
   <router-view/>
 </template>
 
@@ -10,11 +12,15 @@
 
   import { mapState } from 'vuex'
   export default {
-
+    
+    // on the first run, load products and load shopping bag
     created() {
+      // In the vue component, invoke actionsn using .dispatch() where argument is the name of the action
       this.$store.dispatch('loadProducts');
       this.$store.dispatch('loadBag');
     },
+
+    // get productsInBag state
     computed: mapState([
       'productsInBag' 
     ]),

@@ -2,6 +2,7 @@
   <div class="home">
     <div class="products">
 
+      <!-- if the item is bag, add inBag class -->
       <div 
         v-for="(product, index) in this.products" :key="index"
         class="product"
@@ -11,6 +12,8 @@
         </div>
         <h4>{{product.title}}</h4>
         <p class="price">US$ {{product.price.toFixed(2)}}</p>
+
+        <!-- if item is not in bag yet, then add it to bag -->
         <button v-if="!isInBag(product)" @click="addToBag(product)">Add to bag</button>
         <button 
           v-else 
@@ -32,6 +35,9 @@ export default {
       
     }
   },
+
+  // computed property to get this.$store.state.products and this.$store.state.productsInBag
+  // use mapState([]) to get computed state data property easily
   computed: mapState([
     'products', 
     'productsInBag' 
@@ -39,10 +45,11 @@ export default {
 
   methods: {
     addToBag(product) {
-      product.quantity = 1;
+      product.quantity = 1; // add product.quantity attribute to control quantity on shopping bag page
       this.$store.dispatch('addToBag', product);
     },
     isInBag(product) {
+      // check if the product is in bag
       return this.productsInBag.find(item => item.id == product.id)
     }
   }

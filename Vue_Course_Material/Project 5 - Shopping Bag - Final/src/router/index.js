@@ -1,7 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+// import full page under views folder
 import Home from '../views/HomePage.vue'
 import Basket from '../views/ShoppingBasket.vue'
 
+// define routes
 const routes = [
   {
     path: '/',
