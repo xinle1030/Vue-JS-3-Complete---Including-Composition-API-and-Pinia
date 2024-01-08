@@ -17,7 +17,10 @@ console.log(appName.value); // to access appName variable value in the script se
 
 const store = useTasksStore();
 
+// make tasks store to subscribe to the state
+// set a function that will fire everytime when there is a change in the state - such as adding new task, updating task.completed
 store.$subscribe((mutation, state) => {
+  // save tasks only
   localStorage.setItem('tasks', JSON.stringify(state.tasks));
 });
 

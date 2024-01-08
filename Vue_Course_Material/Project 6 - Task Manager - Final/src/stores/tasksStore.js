@@ -5,10 +5,13 @@ import { defineStore } from "pinia";
 import { reactive, ref, computed } from "vue";
 
 export const useTasksStore = defineStore("tasks", () => {
+
+  // if there are existing tasks in local storage, return it; else, start with []
   let tasks = reactive(JSON.parse(localStorage.getItem("tasks")) || []); // declare reactive array in this way
 
   let filterBy = ref(""); // declare ref in this way
 
+  // we can actually have a separate modalStore if we have more than one modal
   let modalIsActive = ref(false); //declare ref for whether modal is opened
 
   // set filterBy value using .value
@@ -34,7 +37,7 @@ export const useTasksStore = defineStore("tasks", () => {
     if (newTask.name && newTask.description) {
       newTask.id = tasks.length
         ? Math.max(...tasks.map((task) => task.id)) + 1
-        : 1; // add 1 to previous id
+        : 1; // add 1 to previous id; if no prev task, set first task id to 1
       tasks.push(newTask);
       closeModal();
     } else {
@@ -58,6 +61,7 @@ export const useTasksStore = defineStore("tasks", () => {
     modalIsActive.value = false;
   }
 
+  // always need to return everything from the store that we want to use from the outside including state variable, computed variable and method
   return {
     tasks,
     filterBy,

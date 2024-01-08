@@ -9,6 +9,7 @@ const store = useTasksStore();
       <p>Filter by state</p>
       <div class="badges">
         <!-- add selected class to todo when store.filterBy === 'todo' -->
+        <!-- use store.filterBy to access filterBy state variable from store -->
         <div
           @click="store.setFilter('todo')"
           class="badge"
