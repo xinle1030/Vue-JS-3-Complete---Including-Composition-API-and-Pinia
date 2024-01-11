@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 // import ref to make a component reactive to allow two way data binding; ref is only used for primitive data type
 // import reactive to make an object like an array reactive to allow two way data binding
+// then use v-model for input to allow two way data binding 
 import { reactive, ref, computed } from "vue";
 
 export const useTasksStore = defineStore("tasks", () => {
